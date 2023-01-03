@@ -60,7 +60,16 @@ class CategoriaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // validar
+        $request->validate([
+            "nombre" => "required|unique:categorias,nombre,$id"
+        ]);
+
+        $categoria = Categoria::findOrFail($id);
+        $categoria->nombre = $request->nombre;
+        $categoria->update();
+
+        return response()->json(["mensaje" => "Categoria modificada"], 200);
     }
 
     /**
@@ -71,6 +80,8 @@ class CategoriaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $categoria = Categoria::find($id);
+        $categoria->delete();
+        return response()->json(["mensaje" => "Categoria eliminada"], 200);
     }
 }

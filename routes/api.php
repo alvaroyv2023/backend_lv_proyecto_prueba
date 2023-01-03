@@ -36,8 +36,14 @@ Route::group(["prefix" => "v1/auth"], function(){
     });
 });
 
-Route::apiResource("/usuario", UsuarioController::class);
-Route::apiResource("/categoria", CategoriaController::class);
-Route::apiResource("/pedido", PedidoController::class);
-Route::apiResource("/producto", ProductoController::class);
-Route::apiResource("/cliente", ClienteController::class);
+
+Route::get("/pedido/filtro", [PedidoController::class, "fitrar"]);
+
+Route::group(["middleware" => "auth:sanctum"], function(){
+    Route::apiResource("/usuario", UsuarioController::class);
+    Route::apiResource("/categoria", CategoriaController::class);
+    Route::apiResource("/producto", ProductoController::class);
+    Route::apiResource("/cliente", ClienteController::class);
+    Route::apiResource("/pedido", PedidoController::class);
+});
+
